@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Student Hub</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body class="p-4">
+  <div class="container">
+    <div class="d-flex justify-content-between align-items-center mb-3">
+      <h2 id="welcome"></h2>
+      <button id="logoutBtn" class="btn btn-secondary">Logout</button>
+    </div>
+    <h4>Learning Activities</h4>
+    <ul id="activities" class="list-group mb-4"></ul>
+    <div id="groupsSection" style="display:none;">
+      <h4>Join Grammar Game</h4>
+      <div id="groups"></div>
+    </div>
+  </div>
+<script>
+async function getUser(){
+  const res = await fetch('api.php?action=get_user');
+  const data = await res.json();
+  if(!data.loggedIn){
+    window.location.href = 'hub.html';
+    return;
+  }
+  document.getElementById('welcome').textContent = 'Welcome ' + data.student.name;
+}
+
+async function loadActivities(){
+  const res = await fetch('api.php?action=get_activities');
+  const activities = await res.json();
+  const list = document.getElementById('activities');
+  list.innerHTML='';
+  activities.forEach(act=>{
+    const li=document.createElement('li');
+    li.className='list-group-item';
+    li.textContent=act.title + ' - ' + act.description;
+    list.appendChild(li);
+  });
+}
+
+async function loadGroups(){
+  const res = await fetch('api.php?action=get_groups');
+  const groups = await res.json();
+  const section = document.getElementById('groupsSection');
+  const container = document.getElementById('groups');
+  container.innerHTML='';
+  if(groups.length){
+    section.style.display='block';
+    groups.forEach(g=>{
+      const btn=document.createElement('button');
+      btn.className='btn btn-outline-primary me-2 mb-2';
+      btn.textContent='Join '+g.name;
+      btn.onclick=()=>joinGroup(g.name);
+      container.appendChild(btn);
+    });
+  } else {
+    section.style.display='none';
+  }
+}
+
+async function joinGroup(name){
+  await fetch('api.php?action=join_group',{
+    method:'POST',
+    headers:{'Content-Type':'application/x-www-form-urlencoded'},
+    body:'group='+encodeURIComponent(name)
+  });
+  alert('Joined '+name);
+}
+
+document.getElementById('logoutBtn').addEventListener('click', async()=>{
+  await fetch('api.php?action=logout');
+  window.location.href='hub.html';
+});
+
+getUser();
+loadActivities();
+loadGroups();
+</script>
+</body>
+</html>

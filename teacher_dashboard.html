@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Teacher Dashboard</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body class="p-4">
+  <div class="container">
+    <h1 class="mb-4">Teacher Dashboard</h1>
+    <section class="mb-5">
+      <h3>Add Learning Activity</h3>
+      <form id="activityForm" class="row g-3">
+        <div class="col-md-4">
+          <input type="text" id="actTitle" class="form-control" placeholder="Title" required>
+        </div>
+        <div class="col-md-6">
+          <input type="text" id="actDesc" class="form-control" placeholder="Description" required>
+        </div>
+        <div class="col-md-2">
+          <button type="submit" class="btn btn-primary w-100">Add</button>
+        </div>
+      </form>
+    </section>
+    <section class="mb-5">
+      <h3>Pair Students for Chat</h3>
+      <div class="row g-3 align-items-end">
+        <div class="col-md-4">
+          <select id="student1" class="form-select"></select>
+        </div>
+        <div class="col-md-4">
+          <select id="student2" class="form-select"></select>
+        </div>
+        <div class="col-md-2">
+          <button id="pairBtn" class="btn btn-secondary w-100">Pair</button>
+        </div>
+      </div>
+      <ul id="pairs" class="mt-3 list-group"></ul>
+    </section>
+    <section>
+      <h3>Start Grammar Game</h3>
+      <form id="gameForm" class="row g-3 align-items-end">
+        <div class="col-md-8">
+          <input type="text" id="groupNames" class="form-control" placeholder="Comma separated group names" required>
+        </div>
+        <div class="col-md-2">
+          <button type="submit" class="btn btn-success w-100">Start Game</button>
+        </div>
+      </form>
+      <div id="currentGroups" class="mt-3"></div>
+    </section>
+  </div>
+  <script src="teacher_dashboard.js"></script>
+</body>
+</html>
